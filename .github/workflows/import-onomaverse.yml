@@ -1,0 +1,35 @@
+name: Import Onomaverse data
+on:
+  workflow_dispatch:
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      RELEASE_TAG: v2026.06
+    steps:
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client curl
+      - name: Download official Onomaverse CSV releases
+        run: |
+          set -euo pipefail
+          mkdir -p data
+          base="https://github.com/onomaverse/datasets/releases/download/${RELEASE_TAG}"
+          for f in given-name-frequency.csv surname-frequency.csv name-gender-inference.csv name-transliterations.csv name-equivalence.csv name-days.csv popular-names-by-country-2026.csv; do
+            curl -fL --retry 4 --retry-delay 3 -o "data/$f" "$base/$f"
+          done
+          ls -lh data
+      - name: Import and normalize
+        run: psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f scripts/import_onomaverse.sql
+      - name: Verify import
+        run: |
+          psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -c "
+          select 'names' table_name,count(*) rows from public.names
+          union all select 'transliterations',count(*) from public.name_transliterations
+          union all select 'relations',count(*) from public.name_relations
+          union all select 'popularity',count(*) from public.name_popularity
+          union all select 'name_days',count(*) from public.name_days;"
+          
