@@ -1,0 +1,45 @@
+-- Namjoo: production search preparation
+
+create extension if not exists pg_trgm;
+
+-- Fast Persian/Latin name search
+create index if not exists names_name_search_idx
+on public.names using gin (name gin_trgm_ops);
+
+create index if not exists names_latin_search_idx
+on public.names using gin (latin_name gin_trgm_ops);
+
+-- Filters
+create index if not exists names_gender_search_idx
+on public.names(gender);
+
+create index if not exists names_type_search_idx
+on public.names(name_type);
+
+create index if not exists names_country_search_idx
+on public.names(country_id);
+
+create index if not exists names_language_search_idx
+on public.names(language_id);
+
+-- Popularity
+create index if not exists popularity_name_idx
+on public.name_popularity(name_id);
+
+create index if not exists popularity_country_idx
+on public.name_popularity(country_id);
+
+-- Transliteration search
+create index if not exists transliteration_search_idx
+on public.name_transliterations using gin
+(transliteration gin_trgm_ops);
+
+-- Variants search
+create index if not exists variants_search_idx
+on public.name_variants using gin
+(variant gin_trgm_ops);
+
+analyze public.names;
+analyze public.name_popularity;
+analyze public.name_transliterations;
+analyze public.name_variants;
