@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>نامجو پرو — موتور جهانی نام‌ها</title>
+<style>
+:root{--bg:#070912;--panel:#101525;--panel2:#151c2d;--line:#252f48;--txt:#f5f7ff;--muted:#9ba7bd;--p:#795cff;--c:#1ec7b5}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% -10%,#3b2875,transparent 35%),var(--bg);color:var(--txt);font-family:Tahoma,Arial,sans-serif}
+.wrap{max-width:1250px;margin:auto;padding:20px}.nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0}.logo{font-size:30px;font-weight:1000}.logo i{font-style:normal;color:#9c86ff}.navlinks{display:flex;gap:8px}.pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:12px}
+.hero{text-align:center;padding:55px 10px 30px}.hero h1{font-size:clamp(34px,6vw,70px);margin:0;line-height:1.05}.hero h1 span{color:#9c86ff}.hero p{color:var(--muted);line-height:2;max-width:760px;margin:18px auto 28px}
+.searchbox{max-width:950px;margin:auto;position:relative}.search{display:flex;background:#0d1220;border:1px solid #313b59;border-radius:20px;padding:8px;box-shadow:0 25px 90px #0008}.search input{flex:1;background:none;border:0;outline:0;color:white;font-size:18px;padding:15px}.search button{border:0;border-radius:14px;padding:0 25px;color:white;font-weight:bold;background:linear-gradient(135deg,var(--p),#a26cff);cursor:pointer}.suggest{position:absolute;z-index:5;top:72px;right:0;left:0;background:#0e1423;border:1px solid var(--line);border-radius:14px;text-align:right;display:none;overflow:hidden}.suggest div{padding:12px 16px;cursor:pointer}.suggest div:hover{background:var(--panel2)}
+.filters{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;max-width:950px;margin:12px auto}.filters select{background:var(--panel);border:1px solid var(--line);color:#fff;padding:12px;border-radius:12px;outline:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:25px 0}.stat{background:linear-gradient(145deg,var(--panel),#0c1120);border:1px solid var(--line);border-radius:16px;padding:18px}.stat b{font-size:25px;display:block}.stat small{color:var(--muted)}
+.bar{display:flex;justify-content:space-between;align-items:center;margin:25px 0 12px}.bar small{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;cursor:pointer;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#6e58d5}.name{font-size:27px;font-weight:900}.latin{color:#a895ff;margin-top:4px}.tags{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}.tag{font-size:11px;padding:6px 9px;border-radius:999px;background:var(--panel2);color:#c5cde0}.meaning{font-size:13px;color:var(--muted);line-height:1.8}.pager{display:flex;justify-content:center;gap:8px;margin:25px}.pager button{background:var(--panel);border:1px solid var(--line);color:#fff;padding:10px 15px;border-radius:10px;cursor:pointer}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:20;align-items:flex-end;justify-content:center}.modal.open{display:flex}.sheet{width:min(850px,100%);max-height:88vh;overflow:auto;background:#0f1524;border:1px solid var(--line);border-radius:28px 28px 0 0;padding:28px}.x{float:left;background:none;border:0;color:#aaa;font-size:25px}.detailName{font-size:50px;font-weight:1000}.detailLatin{color:#a895ff;font-size:20px}.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:25px 0}.fact{background:var(--panel2);padding:15px;border-radius:14px}.fact small{display:block;color:var(--muted);margin-bottom:6px}.section{border-top:1px solid var(--line);padding-top:18px;margin-top:20px}.related{display:flex;gap:8px;flex-wrap:wrap}.rel{padding:9px 12px;border:1px solid var(--line);border-radius:10px;color:#cfd5e4}
+footer{color:#78849c;font-size:12px;line-height:2;padding:45px 0}
+@media(max-width:850px){.grid{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.facts{grid-template-columns:1fr 1fr}}
+@media(max-width:550px){.grid,.stats,.filters,.facts{grid-template-columns:1fr}.search button{padding:0 15px}.navlinks{display:none}.detailName{font-size:38px}}
+</style>
+</head>
+<body><div class="wrap">
+<nav class="nav"><div class="logo">نام<i>جو</i></div><div class="navlinks"><span class="pill">نسخه Pro</span><span class="pill">۱۰۶+ کشور</span><span class="pill">۹۴+ زبان</span></div></nav>
+<section class="hero"><h1>دنیای نام‌ها، <span>یکجا</span></h1><p>موتور جستجوی جهانی نامجو برای نام‌های کوچک و خانوادگی، با جستجوی سریع، فیلترهای دقیق، گونه‌های نوشتاری و صفحهٔ اختصاصی هر نام.</p>
+<div class="searchbox"><div class="search"><input id="q" placeholder="نام را جستجو کن؛ فارسی یا لاتین..." autocomplete="off"><button onclick="load()">جستجو</button></div><div id="suggest" class="suggest"></div></div>
+<div class="filters"><select id="country"><option value="">همه کشورها</option></select><select id="language"><option value="">همه زبان‌ها</option></select><select id="gender"><option value="">همه جنسیت‌ها</option><option value="M">مذکر</option><option value="F">مونث</option><option value="M;F">مشترک</option></select><select id="type"><option value="given">نام کوچک</option><option value="surname">نام خانوادگی</option></select></div></section>
+<section class="stats"><div class="stat"><b id="s1">—</b><small>رکورد نام در دیتابیس</small></div><div class="stat"><b id="s2">—</b><small>کشور پوشش‌داده‌شده</small></div><div class="stat"><b id="s3">—</b><small>زبان</small></div><div class="stat"><b>۱M+</b><small>ترانویسی چندزبانه قابل اتصال</small></div></section>
+<div class="bar"><strong>نام‌ها</strong><small id="count"></small></div><main id="grid" class="grid"></main><div class="pager"><button onclick="page=Math.max(1,page-1);load()">قبلی</button><button onclick="page++;load()">بعدی</button></div>
+<footer>نامجو یک موتور نام‌شناسی است. داده‌های هر منبع با مجوز و منشأ مستقل نگهداری می‌شوند. دادهٔ Onomaverse v2026.06 با CC BY 4.0 قابل استفاده و اقتباس است و باید attribution آن درج شود.</footer>
+</div>
+<div class="modal" id="modal" onclick="if(event.target.id==='modal')closeModal()"><div class="sheet"><button class="x" onclick="closeModal()">×</button><div id="detail"></div></div></div>
+<script>
+const API='';let page=1,timer;
+const DEMO = [
+ {slug:'arian',name:'آرین',latin_name:'Arian',country_name:'ایران',language_name:'فارسی',gender:'مذکر',meaning:'نسبت‌داده‌شده به آریاییان؛ نجیب',occurrence:12000,rank:1},
+ {slug:'anahita',name:'آناهیتا',latin_name:'Anahita',country_name:'ایران',language_name:'فارسی',gender:'مونث',meaning:'نام ایزدبانوی آب در ایران باستان',occurrence:9500,rank:2},
+ {slug:'dariush',name:'داریوش',latin_name:'Darius',country_name:'ایران',language_name:'فارسی',gender:'مذکر',meaning:'نام تاریخی پادشاهان هخامنشی',occurrence:9100,rank:3},
+ {slug:'cyrus',name:'کوروش',latin_name:'Cyrus',country_name:'ایران',language_name:'فارسی',gender:'مذکر',meaning:'نام تاریخی پادشاه هخامنشی',occurrence:8800,rank:4},
+ {slug:'sara',name:'سارا',latin_name:'Sara',country_name:'ایران',language_name:'فارسی',gender:'مونث',meaning:'نامی بین‌المللی با کاربرد گسترده',occurrence:8300,rank:5},
+ {slug:'ali',name:'علی',latin_name:'Ali',country_name:'ایران',language_name:'فارسی',gender:'مذکر',meaning:'بلندمرتبه، والا',occurrence:8200,rank:6},
+ {slug:'leila',name:'لیلا',latin_name:'Leila',country_name:'ایران',language_name:'فارسی',gender:'مونث',meaning:'شب؛ نامی کهن در ادبیات فارسی و عربی',occurrence:7900,rank:7},
+ {slug:'ava',name:'آوا',latin_name:'Ava',country_name:'ایران',language_name:'فارسی',gender:'مونث',meaning:'صدا، آوا',occurrence:7600,rank:8},
+ {slug:'kian',name:'کیان',latin_name:'Kian',country_name:'ایران',language_name:'فارسی',gender:'مذکر',meaning:'پادشاهی، خاندان کیانی',occurrence:7200,rank:9},
+ {slug:'arya',name:'آریا',latin_name:'Arya',country_name:'ایران',language_name:'فارسی',gender:'مشترک',meaning:'آریایی؛ نجیب، با کاربردهای گوناگون',occurrence:7000,rank:10},
+ {slug:'sofia',name:'Sofia',latin_name:'Sofia',country_name:'یونان',language_name:'Greek',gender:'مونث',meaning:'خِرَد، دانایی',occurrence:6800,rank:11},
+ {slug:'alexander',name:'Alexander',latin_name:'Alexander',country_name:'یونان',language_name:'Greek',gender:'مذکر',meaning:'مدافع مردم',occurrence:6500,rank:12},
+ {slug:'yuki',name:'Yuki',latin_name:'Yuki',country_name:'ژاپن',language_name:'Japanese',gender:'مشترک',meaning:'معنا بسته به کانجی؛ از جمله برف یا امید',occurrence:6100,rank:13},
+ {slug:'sakura',name:'Sakura',latin_name:'Sakura',country_name:'ژاپن',language_name:'Japanese',gender:'مونث',meaning:'شکوفه گیلاس',occurrence:5900,rank:14},
+ {slug:'john',name:'John',latin_name:'John',country_name:'آمریکا',language_name:'English',gender:'مذکر',meaning:'نامی بسیار رایج با ریشه عبری',occurrence:5700,rank:15},
+ {slug:'olivia',name:'Olivia',latin_name:'Olivia',country_name:'بریتانیا',language_name:'English',gender:'مونث',meaning:'مرتبط با زیتون',occurrence:5500,rank:16},
+ {slug:'mateo',name:'Mateo',latin_name:'Mateo',country_name:'اسپانیا',language_name:'Spanish',gender:'مذکر',meaning:'هدیه خدا',occurrence:5200,rank:17},
+ {slug:'fatima',name:'Fatima',latin_name:'Fatima',country_name:'مراکش',language_name:'Arabic',gender:'مونث',meaning:'نام تاریخی و رایج در جهان اسلام',occurrence:5000,rank:18},
+ {slug:'david',name:'David',latin_name:'David',country_name:'اسرائیل',language_name:'Hebrew',gender:'مذکر',meaning:'محبوب، گرامی',occurrence:4800,rank:19},
+ {slug:'maya',name:'Maya',latin_name:'Maya',country_name:'هند',language_name:'Sanskrit',gender:'مونث',meaning:'مایا؛ معنا وابسته به سنت و ریشه',occurrence:4600,rank:20}
+];
+function localFilter(){
+ const q=$('q').value.trim().toLowerCase(), c=$('country').value,l=$('language').value,g=$('gender').value;
+ return DEMO.filter(x=>(!q||[x.name,x.latin_name,x.meaning].join(' ').toLowerCase().includes(q))&&(!c||x.country_name===c)&&(!l||x.language_name===l)&&(!g||x.gender===g));
+}
+function fillLocal(){
+ [...new Set(DEMO.map(x=>x.country_name))].sort().forEach(x=>$('country').insertAdjacentHTML('beforeend',`<option>${x}</option>`));
+ [...new Set(DEMO.map(x=>x.language_name))].sort().forEach(x=>$('language').insertAdjacentHTML('beforeend',`<option>${x}</option>`));
+}
+
+const $=x=>document.getElementById(x);
+function boot(){
+  fillLocal();
+  $('s1').textContent='۲۰';
+  $('s2').textContent='۱۰';
+  $('s3').textContent='۸';
+  load();
+}
+function load(){
+ const rows=localFilter();
+ $('count').textContent=`${rows.length.toLocaleString('fa-IR')} نتیجه`;
+ $('grid').innerHTML=rows.map(x=>`<article class="card" onclick="openName('${x.slug}')"><div class="name">${x.name}</div><div class="latin">${x.latin_name||''}</div><div class="tags"><span class="tag">${x.country_name||'—'}</span><span class="tag">${x.language_name||'—'}</span><span class="tag">${x.gender||'—'}</span></div><div class="meaning">${x.meaning||''}</div></article>`).join('') || '<div style="color:#aaa;padding:30px">نامی پیدا نشد.</div>';
+}
+function openName(slug){
+ const x=DEMO.find(n=>n.slug===slug); if(!x)return;
+ $('detail').innerHTML=`<div class="detailName">${x.name}</div><div class="detailLatin">${x.latin_name||''}</div><div class="facts"><div class="fact"><small>کشور</small>${x.country_name}</div><div class="fact"><small>زبان</small>${x.language_name}</div><div class="fact"><small>جنسیت</small>${x.gender}</div><div class="fact"><small>رتبه</small>${x.rank}</div><div class="fact"><small>فراوانی</small>${x.occurrence.toLocaleString()}</div><div class="fact"><small>نوع</small>نام کوچک</div></div><div class="section"><b>معنی</b><p>${x.meaning}</p></div><div class="section"><b>اطلاعات</b><p>این نسخهٔ GitHub Pages برای نمایش سریع رابط نامجو است. دیتابیس چندمیلیونی در نسخهٔ Production از API و PostgreSQL تغذیه خواهد شد.</p></div>`;
+ $('modal').classList.add('open');
+}
+function closeModal(){$('modal').classList.remove('open')}
+$('q').addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(()=>{page=1;load()},250)});['country','language','gender','type'].forEach(id=>$(id).addEventListener('change',()=>{page=1;load()}));boot();
+</script></body></html>
